@@ -420,11 +420,11 @@ print(f"   Calmar: {best_calmar['calmar']:.2f}")
 # Save Results
 
 comparison_df.to_csv('best_strategies_results.csv')
-print("\n📁 Results saved to: best_strategies_results.csv")
-print("📁 Visualization saved to: best_strategies_comparison.png")
+print("\n Results saved to: best_strategies_results.csv")
+print(" Visualization saved to: best_strategies_comparison.png")
 
 print("\n" + "="*70)
-print("✅ COMPLETE! Choose your strategy based on your goal:")
+print(" COMPLETE! Choose your strategy based on your goal:")
 print("   • Maximum Return → aggressive (2157.19%)")
 print("   • Best Sharpe → advanced_safest (104.55)")
 print("   • Safest → conservative (-8.98% DD)")
