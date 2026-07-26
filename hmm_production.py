@@ -562,3 +562,11 @@ def main():
 if __name__ == "__main__":
     main()
 
+# Add at the bottom of your HMM cell — exposes master to notebook
+price_df   = load_price_data(PRICE_CSV)
+feature_df = load_feature_data(FEATURE_CSV)
+vix_data   = fetch_vix(str(price_df.index[0].date()),
+                       str(price_df.index[-1].date()))
+master     = build_master_dataframe(price_df, feature_df, vix_data)
+print(f"✅ master exposed to notebook: {master.shape}")
+
