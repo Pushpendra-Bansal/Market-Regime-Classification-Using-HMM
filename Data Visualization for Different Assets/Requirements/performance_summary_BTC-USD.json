@@ -1,0 +1,45 @@
+{
+  "strategy_metrics": {
+    "label": "HMM Strategy",
+    "annualised_return": 0.16765800691926946,
+    "annualised_vol": 0.2494530067393985,
+    "sharpe": 0.6721025699819302,
+    "max_drawdown": -0.4450564634759976
+  },
+  "bah_metrics": {
+    "label": "Buy & Hold",
+    "annualised_return": 0.1804573928149582,
+    "annualised_vol": 0.6565270341284688,
+    "sharpe": 0.2748666596106177,
+    "max_drawdown": -0.8371556389777988
+  },
+  "regime_occupancy_pct": {
+    "Chop": 36.42653642653643,
+    "Bear": 32.193732193732195,
+    "Bull": 31.37973137973138
+  },
+  "regime_occupancy_days": {
+    "Chop": 895,
+    "Bear": 791,
+    "Bull": 771
+  },
+  "silhouette_pooled": -0.0385455894264646,
+  "silhouette_fold_mean": 0.16169610647083693,
+  "silhouette_fold_median": 0.18654392659488628,
+  "silhouette_fold_min": -0.10353607970526663,
+  "silhouette_fold_max": 0.3321926448147035,
+  "n_folds_with_valid_silhouette": 39,
+  "directional_hit_rate": 0.4967989756722151,
+  "trade_win_rate": 0.5138436482084691,
+  "n_folds_fit": 39,
+  "n_folds_converged": 39,
+  "mean_posterior_top_prob": 0.934657122831233,
+  "mean_posterior_margin": 0.8720942468372797,
+  "mean_posterior_entropy": 0.1579711647062177,
+  "leverage": {
+    "Bull": 2.0,
+    "Chop": 1.5,
+    "Bear": 0.6
+  },
+  "trans_cost_bps": 0.0002
+}
