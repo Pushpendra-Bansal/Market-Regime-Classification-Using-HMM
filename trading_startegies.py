@@ -199,7 +199,7 @@ def calculate_metrics(df):
     win_rate = wins / active_days * 100 if active_days > 0 else 0
 
     # Calmar ratio
-    calmar = total_strategy / abs(max_dd) if max_dd != 0 else 0
+    calmar = ann_strategy / abs(max_dd) if max_dd != 0 else 0
 
     # Average position
     avg_position = clean['position'].abs().mean()
