@@ -3,6 +3,8 @@
 > **IITI SOC · Finalytics Advanced PS**  
 > A production-grade Hidden Markov Model pipeline for detecting market regimes (Bull / Chop / Bear) in SPY, with walk-forward backtesting, strategy comparison, and forward-looking next-day regime prediction.
 
+**🌐 Live Demo:** [website-mewfdzpk2julnnsvqdzmnj.streamlit.app](https://website-mewfdzpk2julnnsvqdzmnj.streamlit.app/)
+
 ---
 
 ## 🧠 What This Project Does
@@ -14,6 +16,8 @@ This project uses a **3-state Gaussian Hidden Markov Model (HMM)** trained on SP
 - Apply **regime-based position sizing** to outperform buy-and-hold
 - Compare multiple strategies across return, Sharpe, drawdown, and Calmar
 - Provide a **forward-looking next-day regime prediction** using transition matrix math
+
+👉 Try the interactive version here: **[Streamlit App](https://website-mewfdzpk2julnnsvqdzmnj.streamlit.app/)**
 
 ---
 
@@ -93,6 +97,12 @@ Raw OHLCV Data (yfinance)
 
 ## 🚀 Quick Start
 
+### 0. Try it online first (no setup required)
+
+Explore the model interactively without installing anything:
+
+**🌐 [https://website-mewfdzpk2julnnsvqdzmnj.streamlit.app/](https://website-mewfdzpk2julnnsvqdzmnj.streamlit.app/)**
+
 ### 1. Clone the repo
 ```bash
 git clone https://github.com/<your-username>/hmm-regime-detection.git
@@ -144,6 +154,13 @@ python Code_for_Different_Regimes.py TLT
 python Code_for_Different_Regimes.py BTC-USD 2014-09-17
 ```
 
+### 5. Run the Streamlit app locally (optional)
+
+If the repo includes a Streamlit entry point (e.g. `app.py` / `streamlit_app.py`):
+```bash
+streamlit run app.py
+```
+
 ---
 
 ## 📦 Requirements
@@ -159,11 +176,12 @@ pandas_ta
 matplotlib
 scipy
 statsmodels
+streamlit
 ```
 
 Install all at once:
 ```bash
-pip install numpy pandas scikit-learn hmmlearn yfinance joblib pandas_ta matplotlib scipy statsmodels
+pip install numpy pandas scikit-learn hmmlearn yfinance joblib pandas_ta matplotlib scipy statsmodels streamlit
 ```
 
 ---
