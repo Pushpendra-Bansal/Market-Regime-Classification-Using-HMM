@@ -15,12 +15,12 @@
 # HOW TO RUN:
 #   - Step 1 (Feature Generation):
 #       python Code_for_Different_Regimes.py [TICKER] [START_DATE]
-#       Example: python Cross_Asset_Calculations.py SPY
-#       Example: python Cross_Asset_Calculations.py BTC 2014-09-17
+#       Example: python Code_for_Different_Regimes.py SPY
+#       Example: python Code_for_Different_Regimes.py BTC 2014-09-17
 #
 #   - Step 2 (HMM Pipeline & Backtest Execution):
-#       python Cross_Asset_Calculations.py [TICKER]
-#       Example: python Cross_Asset_Calculations.py SPY
+#       python Code_for_Different_Regimes.py [TICKER]
+#       Example: python Code_for_Different_Regimes.py SPY
 #
 # GENERATED OUTPUTS & ARTIFACTS:
 #   1. Feature Generation Outputs:
