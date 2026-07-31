@@ -14,7 +14,7 @@
 #
 # HOW TO RUN:
 #   - Step 1 (Feature Generation):
-#       python Cross_Asset_Calculations.py [TICKER] [START_DATE]
+#       python Code_for_Different_Regimes.py [TICKER] [START_DATE]
 #       Example: python Cross_Asset_Calculations.py SPY
 #       Example: python Cross_Asset_Calculations.py BTC 2014-09-17
 #
