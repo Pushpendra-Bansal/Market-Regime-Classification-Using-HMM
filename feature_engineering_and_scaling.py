@@ -1,17 +1,28 @@
-"""
-Run These Commands Before:
-pip install yfinance
-pip install pandas_ta
-
-How to Run:
-1. Type python feature_engineering_and_scaling.py in terminal to run this code.
-
-Results :
-It produces 3 Csv files namely features_improved.csv,features_original.csv,all_features.csv.
-features_improved.csv:['log_return', 'volume_zscore', 'momentum', 'parkinson_vol', 'rsi', 'ma_cross']
-features_original.csv:['log_return', 'yz_vol', 'volume_zscore', 'momentum']
-all_features.csv:['log_return', 'yz_vol', 'volume_zscore', 'momentum', 'parkinson_vol']..
-"""
+# ==============================================================================
+# HMM FEATURE ENGINEERING & DATA PREPARATION PIPELINE
+#
+# OVERVIEW:
+#   This module downloads historical market data (SPY), computes custom technical 
+#   indicators (volatility, momentum, volume z-scores, RSI, MA cross, MACD), and 
+#   generates normalized feature datasets for HMM model training and evaluation.
+#
+# SYSTEM & ENVIRONMENT REQUIREMENTS:
+#   1. Python Version: Python 3.8 or higher
+#   2. Core Libraries: pip install yfinance pandas numpy scikit-learn joblib pandas_ta
+#   3. Active Internet Connection: Required to download historical ticker data 
+#      via yfinance (SPY dataset from 2005 to 2024).
+#
+# HOW TO RUN:
+#   - Command Line Exec : python feature_engineering_and_scaling.py
+#   - Jupyter Notebook  : Run cell directly.
+#
+# GENERATED OUTPUTS & ARTIFACTS:
+#   1. 'features_improved.csv' : Recommended feature set containing ['log_return', 
+#                                'volume_zscore', 'momentum', 'parkinson_vol', 'rsi', 'ma_cross'].
+#   2. 'features_original.csv' : Legacy feature set for baseline comparisons.
+#   3. 'all_features.csv'      : Full dataset containing all computed indicators.
+#   4. 'scaler.pkl'            : Saved fitted RobustScaler instance for deployment.
+# ==============================================================================
 import yfinance as yf
 import pandas as pd
 import numpy as np
