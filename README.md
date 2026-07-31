@@ -110,8 +110,8 @@ Before running, place the following file in the project root directory:
   df.to_csv("price_data.csv")
   ```
 
-> `price_data.csv` is required by `hmm_production.py`, `forward_engine.py`, and `compare_strategies.py`.  
-> `feature_engineering.py` downloads data automatically via yfinance and does not need this file.
+> `price_data.csv` is required by `hmm_production.py`, `regime_prediction_engine.py`, and `trading_strategies.py`.  
+> `feature_engineering_and_scaling.py` downloads data automatically via yfinance and does not need this file.
 
 ### 4. Run the full pipeline
 ```bash
