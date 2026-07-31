@@ -2,6 +2,15 @@
 Run These Commands Before:
 pip install yfinance
 pip install pandas_ta
+
+How to Run:
+1. Type python feature_engineering_and_scaling.py in terminal to run this code.
+
+Results :
+It produces 3 Csv files namely features_improved.csv,features_original.csv,all_features.csv.
+features_improved.csv:['log_return', 'volume_zscore', 'momentum', 'parkinson_vol', 'rsi', 'ma_cross']
+features_original.csv:['log_return', 'yz_vol', 'volume_zscore', 'momentum']
+all_features.csv:['log_return', 'yz_vol', 'volume_zscore', 'momentum', 'parkinson_vol']..
 """
 import yfinance as yf
 import pandas as pd
