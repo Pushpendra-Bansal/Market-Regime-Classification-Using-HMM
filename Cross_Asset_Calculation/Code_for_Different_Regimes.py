@@ -1,10 +1,38 @@
-"""
-Usage:
-      Type "python Cross_Asset_Calculations.py SPY/GLD/TLT" on terminal for different assest such as SPY/TLT/GLD use different keywords after typing python Cross_Asset_Calculations.
-Produces:
-    price_data.csv     — raw OHLCV (unchanged from before)
-    feature_clean.csv  — RAW features, no scaling applied
-"""
+# ==============================================================================
+# CROSS-ASSET FEATURE ENGINEERING & HMM WALK-FORWARD PIPELINE
+#
+# OVERVIEW:
+#   This module contains two core quantitative workflows:
+#     1. Feature Engineering & Calculation (`feature_engineering.py` logic)
+#     2. HMM Regime Trading & Walk-Forward Backtesting (`hmm_production.py` logic)
+#
+# SYSTEM & ENVIRONMENT REQUIREMENTS:
+#   1. Python Version: Python 3.8 or higher
+#   2. Core Libraries: pip install numpy pandas yfinance scipy scikit-learn hmmlearn statsmodels
+#   3. Active Internet Connection: Required on initial run to download OHLCV 
+#      asset price data via yfinance.
+#
+# HOW TO RUN:
+#   - Step 1 (Feature Generation):
+#       python Cross_Asset_Calculations.py [TICKER] [START_DATE]
+#       Example: python Cross_Asset_Calculations.py SPY
+#       Example: python Cross_Asset_Calculations.py BTC 2014-09-17
+#
+#   - Step 2 (HMM Pipeline & Backtest Execution):
+#       python Cross_Asset_Calculations.py [TICKER]
+#       Example: python Cross_Asset_Calculations.py SPY
+#
+# GENERATED OUTPUTS & ARTIFACTS:
+#   1. Feature Generation Outputs:
+#      - 'price_data_[TICKER].csv'   : Raw downloaded OHLCV pricing dataset.
+#      - 'feature_clean_[TICKER].csv': Unscaled trailing features (log returns, z-scores, momentum).
+#
+#   2. HMM Pipeline Outputs:
+#      - 'hmm_oos_results_[TICKER].csv'     : Out-of-sample regimes, position sizes, turnover, and returns.
+#      - 'fold_diagnostics_[TICKER].csv'    : Per-fold transition probabilities and emission stats.
+#      - 'performance_summary_[TICKER].json': Comprehensive JSON report containing CAGR, Sharpe, Drawdown,
+#                                             and Silhouette scores.
+# ==============================================================================
 
 import sys
 import logging
