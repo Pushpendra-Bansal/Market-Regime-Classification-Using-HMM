@@ -1,5 +1,5 @@
 # ==============================================================================
-# HMM REGIME-BASED TRADING STRATEGY
+# HMM PRODUCTION
 # 
 # REQUIREMENTS:
 #   1. Python 3.8+
