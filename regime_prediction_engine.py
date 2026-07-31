@@ -1,6 +1,16 @@
-# -*- coding: utf-8 -*-
-
-
+# ==============================================================================
+# FORWARD-LOOKING HMM REGIME PREDICTION & BACKTESTING ENGINE
+#
+# REQUIREMENTS:
+#   1. Python 3.8+
+#   2. Dependencies: pip install numpy pandas scikit-learn hmmlearn
+#   3. Required Input Files (in same directory):
+#      - 'price_data.csv'         : Historical daily pricing data.
+#      - 'features_improved.csv'   : Pre-computed technical features matching FEATURES list.
+#
+# HOW TO RUN:
+#   - Standalone Terminal Script : python script_name.py
+# ==============================================================================
 import sys
 import logging
 import warnings
