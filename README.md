@@ -4,7 +4,7 @@
 > A production-grade Hidden Markov Model pipeline for detecting market regimes (Bull / Chop / Bear) in SPY, with walk-forward backtesting, strategy comparison, and forward-looking next-day regime prediction.
 
 **🌐 Live Demo:** [website-mewfdzpk2julnnsvqdzmnj.streamlit.app](https://website-mewfdzpk2julnnsvqdzmnj.streamlit.app/)
-(may stop working due inactivity of webapp but mostly it will work almost everytime)
+(if it doesnt work due to inactivity then run it locally from "Interactive Dashboard Web App" present in our repository)
 ---
 
 ## 🧠 What This Project Does
