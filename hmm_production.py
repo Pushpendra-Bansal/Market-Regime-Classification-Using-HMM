@@ -1,3 +1,18 @@
+# ==============================================================================
+# HMM REGIME-BASED TRADING STRATEGY
+# 
+# REQUIREMENTS:
+#   1. Python 3.8+
+#   2. Dependencies: pip install numpy pandas scikit-learn hmmlearn yfinance
+#   3. Required Files in Working Directory:
+#      - 'price_data.csv'   : Daily price data with a 'Date' index and price column.Download it from our Git Hub Repo.
+#      - 'features_improved.csv' : Technical features generated beforehand.
+# 
+# HOW TO RUN:
+#   - Command Line:  python script_name.py
+#   - Jupyter Cell:  Paste and run cell directly (ensuring local files exist).
+# ==============================================================================
+
 import sys
 import warnings
 import logging
