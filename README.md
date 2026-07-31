@@ -33,10 +33,10 @@ This project uses a **3-state Gaussian Hidden Markov Model (HMM)** trained on SP
 ## 🗂️ Project Structure
 
 ```
-├── feature_engineering.py      # Downloads SPY data, computes technical features, saves CSVs
+├── feature_engineering_and_scaling.py      # Downloads SPY data, computes technical features, saves CSVs
 ├── hmm_production.py           # HMM walk-forward training, position sizing, backtest
-├── forward_engine.py           # Forward-looking prediction engine (π_{t+1} = π_t @ A)
-├── compare_strategies.py       # Strategy comparison, metrics table, matplotlib charts
+├── regime_prediction_engine.py           # Forward-looking prediction engine (π_{t+1} = π_t @ A)
+├── trading_strategies.py       # Strategy comparison, metrics table, matplotlib charts
 │
 ├── features_improved.csv       # Recommended feature set (6 features) — output of step 1
 ├── features_original.csv       # Baseline feature set (4 features) — output of step 1
@@ -59,7 +59,7 @@ This project uses a **3-state Gaussian Hidden Markov Model (HMM)** trained on SP
 Raw OHLCV Data (yfinance)
         │
         ▼
-1. Feature Engineering          ← feature_engineering.py
+1. Feature Engineering          ← feature_engineering_and_scaling.py
    log_return, parkinson_vol,
    rsi, ma_cross, momentum,
    volume_zscore
@@ -72,13 +72,13 @@ Raw OHLCV Data (yfinance)
    Position sizing + backtest
         │
         ▼
-3. Forward Prediction Engine    ← forward_engine.py
+3. Forward Prediction Engine    ← regime_prediction_engine.py
    π_{t+1} = π_t @ A
    Next-day regime probabilities,
    bear warning signal, stability score
         │
         ▼
-4. Strategy Comparison          ← compare_strategies.py
+4. Strategy Comparison          ← trading_strategies.py
    5 strategies, matplotlib charts,
    metrics: return, Sharpe, Calmar, drawdown
 ```
