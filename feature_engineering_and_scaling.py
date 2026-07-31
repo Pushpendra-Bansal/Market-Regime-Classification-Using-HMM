@@ -1,7 +1,8 @@
+"""
+Run These Commands Before:
 pip install yfinance
-
 pip install pandas_ta
-
+"""
 import yfinance as yf
 import pandas as pd
 import numpy as np
