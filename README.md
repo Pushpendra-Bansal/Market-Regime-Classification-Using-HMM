@@ -214,7 +214,7 @@ This produces:
 - **Regime stability score** — probability of staying in current regime
 - **5-day rolling forecast** — dominant regime for each of next 5 days
 
-### Method Comparison (from `forward_engine.py`)
+### Method Comparison (from `regime_prediction_engine.py`)
 | Method | Position Basis |
 |---|---|
 | A. Hard-Cap | Fixed cap per today's regime label |
