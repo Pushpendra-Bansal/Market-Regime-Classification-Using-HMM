@@ -1,16 +1,35 @@
 # ==============================================================================
 # HMM PRODUCTION
-# 
-# REQUIREMENTS:
-#   1. Python 3.8+
-#   2. Dependencies: pip install numpy pandas scikit-learn hmmlearn yfinance
-#   3. Required Files in Working Directory:
-#      - 'price_data.csv'   : Daily price data with a 'Date' index and price column.Download it from our Git Hub Repo.
-#      - 'features_improved.csv' : Technical features generated beforehand.
-# 
-# HOW TO RUN:
-#   - Command Line:  python script_name.py
-#   - Jupyter Cell:  Paste and run cell directly (ensuring local files exist).
+# ==============================================================================
+# HMM REGIME DETECTION & WALK-FORWARD TRADING PIPELINE
+#
+# OVERVIEW:
+#   This module executes a production-grade Hidden Markov Model (HMM) pipeline
+#   to classify market regimes (Bull, Chop, Bear) and run an out-of-sample (OOS)
+#   walk-forward backtest using volatility-targeted position sizing.
+#
+# SYSTEM & ENVIRONMENT REQUIREMENTS:
+#   1. Python Version: Python 3.8 or higher
+#   2. Core Libraries: pip install numpy pandas scikit-learn hmmlearn yfinance
+#   3. Active Internet Connection: Required on initial run to fetch historical 
+#      VIX data via yfinance (^VIX).
+#
+# REQUIRED INPUT FILES (Must reside in the working directory):
+#   1. 'price_data.csv'      : Daily asset pricing data containing Date and Close/Price columns.
+#   2. 'features_improved.csv': Pre-computed technical indicators containing the columns:
+#                              ['log_return', 'volume_zscore', 'momentum', 
+#                               'parkinson_vol', 'rsi', 'ma_cross']
+#
+# PIPELINE EXECUTION & WORKFLOW:
+#   - Command Line Exec : python hmm_production.py
+#   - Jupyter Notebook  : Run cell directly. The code auto-exposes the global `master` 
+#                         and `results_df` DataFrames to the notebook environment.
+#
+# GENERATED OUTPUTS & ARTIFACTS:
+#   1. 'hmm_oos_results.csv' : Out-of-sample regime classifications, position sizes, 
+#                              turnover metrics, and strategy net returns saved to disk.
+#   2. Performance Summary   : Terminal/console report displaying CAGR, Volatility, 
+#                              Sharpe Ratio, Max Drawdown, Regime Occupancy, and Silhouette Score.
 # ==============================================================================
 
 import sys
