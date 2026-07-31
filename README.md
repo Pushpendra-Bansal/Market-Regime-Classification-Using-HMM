@@ -1,88 +1,235 @@
-# Market-Regime-Classification-Using-HMM
-# Market Regime Classification Using HMM
+# 📈 HMM Market Regime Detection
 
-## 📊 Project Overview
-
-This project implements a **Hidden Markov Model (HMM)** based trading strategy that automatically detects market regimes (Bull/Chop/Bear) and dynamically adjusts trading positions for optimal risk-adjusted returns.
-
-The strategy uses a **3-state HMM** with walk-forward validation to ensure zero look-ahead bias, making it robust and realistic for live trading applications.
-
-
-##  Features
-
-- **3-State HMM** — Detects Bull / Chop / Bear regimes automatically
-- **Walk-Forward Validation** — No look-ahead bias, realistic backtesting
-- **Volatility Targeting** — Dynamic position sizing based on market volatility
-- **Transaction Costs** — Realistic backtesting with 2bps per trade
-- **Aggressive Strategy** — Bull: 2.0x leverage, Chop: 1.5x, Bear: 0.6x
+> **IITI SOC · Finalytics Advanced PS**  
+> A production-grade Hidden Markov Model pipeline for detecting market regimes (Bull / Chop / Bear) in SPY, with walk-forward backtesting, strategy comparison, and forward-looking next-day regime prediction.
 
 ---
 
-## 📁 Project Structure
-Market-Regime-Classification-Using-HMM/
-├── README.md # Project documentation
-├── requirements.txt # Python dependencies
-├── .gitignore # Excluded files
-├── hmm_production.py # Main HMM strategy (Python script)
-├── feature_engineering.py # Feature creation script
-└── Trading_Startegy.py
+## 🧠 What This Project Does
 
+This project uses a **3-state Gaussian Hidden Markov Model (HMM)** trained on SPY (S&P 500 ETF) data from 2005–2024 to:
 
-  REGIME OCCUPANCY
-------------------------------------------------------------------
-  Bull        :  1866 days (51.1%)
-  Chop        :   922 days (25.2%)
-  Bear        :   866 days (23.7%)
-==================================================================
-
-  CLUSTERING METRICS
-------------------------------------------------------------------
-  Silhouette Score: +0.1654
-  Directional Hit Rate: 54.43%
-  Trade Win Rate: 55.02%
-==================================================================
-
-
-##  Key Results
-
-### Best Strategy: Aggressive (Bull=2.3x, Chop=1.5x, Bear=0.5x)
-
-| Metric | HMM Strategy | Buy & Hold | Improvement |
-|--------|--------------|------------|-------------|
-| **Total Return** | **2,149.02%** | 637.88% | **+1,511.14%** |
-| **Annual Return** | **23.96%** | 14.52% | **+9.44%** |
-| **Sharpe Ratio** | **102.12** | 85.00 | **+20%** |
-| **Max Drawdown** | **-27.28%** | -33.72% | **6% less loss** |
-| **Calmar Ratio** | **78.76** | 18.92 | **+316%** |
-
-✅ **Strategy beats Buy & Hold by 1,511% total return with 16% less drawdown!**
+- Classify each trading day as **Bull**, **Chop**, or **Bear** regime
+- Run a **walk-forward out-of-sample backtest** (no lookahead bias)
+- Apply **regime-based position sizing** to outperform buy-and-hold
+- Compare multiple strategies across return, Sharpe, drawdown, and Calmar
+- Provide a **forward-looking next-day regime prediction** using transition matrix math
 
 ---
 
-## 📊 Strategy Comparison Table
+## 🏆 Key Results (OOS Walk-Forward Backtest)
 
-| Strategy | Bull | Chop | Bear | Return | Annual Return | Sharpe | Max DD | Calmar |
-|----------|------|------|------|--------|---------------|--------|--------|--------|
-| **Aggressive** 🏆 | 2.3 | 1.5 | 0.5 | **2,149.02%** | 23.96% | 102.12 | -27.28% | **78.76** |
-| **Advanced Max** | 2.5 | 2.0 | 1.0 | 1,369.93% | 20.37% | 94.73 | -27.51% | 49.79 |
-| **Balanced** | 1.0 | 0.7 | 0.3 | 352.98% | 10.98% | 101.70 | -15.08% | 23.41 |
-| **Advanced Safest** | 1.0 | 0.5 | 0.2 | 221.71% | 8.39% | 102.75 | -11.03% | 20.10 |
-| **Conservative** | 1.0 | 0.3 | 0.0 | 199.74% | 7.87% | 99.69 | -10.95% | 18.24 |
-| **Buy & Hold** | - | - | - | 637.88% | 14.52% | 85.00 | -33.72% | 18.92 |
+| Strategy | Total Return | Sharpe | Max Drawdown |
+|---|---|---|---|
+| **Aggressive** (2.3x / 1.5x / 0.5x) | ~2149% | ~1.05 | ~-29% |
+| **Balanced** (1.0x / 0.7x / 0.3x) | ~401% | ~0.90 | ~-18% |
+| **Conservative** (1.0x / 0.3x / 0.0x) | ~180% | ~0.85 | ~-11% |
+| Buy & Hold SPY | ~638% | ~0.73 | ~-34% |
+
+> All results are purely out-of-sample. No in-sample data is used in performance evaluation.
 
 ---
 
-## 📈 Performance Visualization
+## 🗂️ Project Structure
 
-![Strategy Performance](results/strategy_performance.png)
+```
+├── feature_engineering.py      # Downloads SPY data, computes technical features, saves CSVs
+├── hmm_production.py           # HMM walk-forward training, position sizing, backtest
+├── forward_engine.py           # Forward-looking prediction engine (π_{t+1} = π_t @ A)
+├── compare_strategies.py       # Strategy comparison, metrics table, matplotlib charts
+│
+├── features_improved.csv       # Recommended feature set (6 features) — output of step 1
+├── features_original.csv       # Baseline feature set (4 features) — output of step 1
+├── all_features.csv            # Full feature set — output of step 1
+├── price_data.csv              # SPY daily OHLCV data
+├── scaler.pkl                  # Saved RobustScaler instance
+│
+├── hmm_oos_results.csv         # OOS regime predictions + backtest returns — output of step 2
+├── forward_regime_results.csv  # Forward-looking signals + 3-method comparison — output of step 3
+├── best_strategies_results.csv # Strategy metrics comparison table — output of step 4
+│
+└── requirements.txt
+```
 
+---
 
-### Strategy Parameters
+## ⚙️ Pipeline Overview
 
-| Regime | Aggressive | Balanced | Conservative | Advanced Max | Advanced Safest |
-|--------|------------|----------|--------------|--------------|-----------------|
-| **Bull** | 2.3x | 1.0x | 1.0x | 2.5x | 1.0x |
-| **Chop** | 1.5x | 0.7x | 0.3x | 2.0x | 0.5x |
-| **Bear** | 0.5x | 0.3x | 0.0x | 1.0x | 0.2x |
+```
+Raw OHLCV Data (yfinance)
+        │
+        ▼
+1. Feature Engineering          ← feature_engineering.py
+   log_return, parkinson_vol,
+   rsi, ma_cross, momentum,
+   volume_zscore
+        │
+        ▼
+2. Walk-Forward HMM Training    ← hmm_production.py
+   Train window : 1260 days
+   Step size    : 63 days
+   States       : 3 (Bull / Chop / Bear)
+   Position sizing + backtest
+        │
+        ▼
+3. Forward Prediction Engine    ← forward_engine.py
+   π_{t+1} = π_t @ A
+   Next-day regime probabilities,
+   bear warning signal, stability score
+        │
+        ▼
+4. Strategy Comparison          ← compare_strategies.py
+   5 strategies, matplotlib charts,
+   metrics: return, Sharpe, Calmar, drawdown
+```
 
+---
 
+## 🚀 Quick Start
+
+### 1. Clone the repo
+```bash
+git clone https://github.com/<your-username>/hmm-regime-detection.git
+cd hmm-regime-detection
+```
+
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Add required data files
+
+Before running, place the following file in the project root directory:
+
+- **`price_data.csv`** — SPY daily OHLCV data (Date, Open, High, Low, Close, Volume).  
+  Download from [Yahoo Finance](https://finance.yahoo.com/quote/SPY/history/) or export via yfinance:
+  ```python
+  import yfinance as yf
+  df = yf.download("SPY", start="2005-01-01", end="2024-12-31")
+  df.to_csv("price_data.csv")
+  ```
+
+> `price_data.csv` is required by `hmm_production.py`, `forward_engine.py`, and `compare_strategies.py`.  
+> `feature_engineering.py` downloads data automatically via yfinance and does not need this file.
+
+### 4. Run the full pipeline
+```bash
+# Step 1: Download SPY data and compute features
+python feature_engineering_and_scaling.py
+
+# Step 2: Train HMM walk-forward and run backtest
+python hmm_production.py
+
+# Step 3: Run forward-looking prediction engine
+python regime_prediction_engine.py
+
+# Step 4: Compare all strategies and generate charts
+python trading_strategies.py
+```
+
+---
+
+## 📦 Requirements
+
+```
+numpy
+pandas
+scikit-learn
+hmmlearn
+yfinance
+joblib
+pandas_ta
+matplotlib
+```
+
+Install all at once:
+```bash
+pip install numpy pandas scikit-learn hmmlearn yfinance joblib pandas_ta matplotlib
+```
+
+---
+
+## 🔬 Model Details
+
+### HMM Configuration
+| Parameter | Value |
+|---|---|
+| States | 3 (Bull, Chop, Bear) |
+| Emission type | Gaussian (diagonal covariance) |
+| Training iterations | 200 |
+| Random seed | 42 |
+
+### Features Used
+| Feature | Description |
+|---|---|
+| `log_return` | Daily log return of closing price |
+| `volume_zscore` | Volume deviation from 20-day rolling mean |
+| `momentum` | 5-day rolling mean of log returns |
+| `parkinson_vol` | High-Low volatility estimator (20-day) |
+| `rsi` | Relative Strength Index (14-day) |
+| `ma_cross` | % difference between 20-day and 50-day MA |
+
+### Walk-Forward Methodology
+- **Expanding window** — training set grows by one quarter each step
+- **No lookahead** — OOS predictions use only past data at each step
+- **Winsorization** — 1st/99th percentile clipping before scaling
+- **StandardScaler** — fitted on train window only, applied to OOS
+
+### Regime Labelling
+States are sorted by mean log return:
+- **Lowest mean return** → Bear
+- **Middle mean return** → Chop
+- **Highest mean return** → Bull
+
+### Position Sizing Strategies
+| Strategy | Bull | Chop | Bear |
+|---|---|---|---|
+| Aggressive | 2.3x | 1.5x | 0.5x |
+| Balanced | 1.0x | 0.7x | 0.3x |
+| Conservative | 1.0x | 0.3x | 0.0x |
+| Advanced Max | 2.5x | 2.0x | 1.0x |
+| Advanced Safest | 1.0x | 0.5x | 0.2x |
+
+Transaction cost: **2 bps per trade**
+
+---
+
+## 🔮 Forward-Looking Engine
+
+Extends the standard HMM with **transition probability forecasting**:
+
+```
+π_{t+1} = π_t @ A
+```
+
+Where:
+- `π_t` = today's posterior state distribution from `predict_proba()`
+- `A` = HMM learned transition matrix
+- `π_{t+1}` = tomorrow's predicted regime probability distribution
+
+This produces:
+- **Forward-weighted position** — blend of caps weighted by predicted regime probs
+- **Bear warning flag** — raised when P(Bear tomorrow) > 30%
+- **Regime stability score** — probability of staying in current regime
+- **5-day rolling forecast** — dominant regime for each of next 5 days
+
+### Method Comparison (from `forward_engine.py`)
+| Method | Position Basis |
+|---|---|
+| A. Hard-Cap | Fixed cap per today's regime label |
+| B. Soft Today | Prob-weighted using today's posterior |
+| C. Forward (new) | Prob-weighted using tomorrow's forecast |
+
+---
+
+## 📄 License
+
+MIT License — free to use, modify, and distribute with attribution.
+
+---
+
+## 👥 Authors
+
+**IIT Indore — Financial Machine Learning Research**  
+Walk-Forward HMM Market Regime Classification · 2024–2025
