@@ -647,40 +647,94 @@ def run_forward_engine(master: pd.DataFrame) -> pd.DataFrame:
 # from the same session.
 
 if __name__ == "__main__":
+    import os
+    import pandas as pd
+    import numpy as np
+    from sklearn.preprocessing import StandardScaler
+    from hmmlearn.hmm import GaussianHMM
 
-    # Check if master exists in globals (called from HMMstrategy session)
-    if 'master' in dir():
-        log.info("Found `master` in session — using it directly.")
-        results = run_forward_engine(master)
+    log.info("Standalone mode — loading from saved CSVs...")
 
-    else:
-        # Standalone mode: rebuild master from saved CSVs
-        log.info("Standalone mode — rebuilding master from saved files...")
+    # ── Configuration — hardcoded for SPY ──
+    PRICE_CSV   = "price_data.csv"
+    FEATURE_CSV = "features_improved.csv"
 
-        # Import the functions from HMMstrategy.py
-        # (assumes HMMstrategy.py is in the same directory)
+    # ── Check files exist ──
+    missing_files = []
+    for f in [PRICE_CSV, FEATURE_CSV]:
+        if not os.path.exists(f):
+            missing_files.append(f)
+
+    if missing_files:
+        log.error(f"Missing files: {missing_files}")
+        log.info("Make sure price_data.csv and features_improved.csv are in the same folder")
+        sys.exit(1)
+
+    # ── Load price data ──
+    def load_price(filepath):
         try:
-            import importlib.util, os
-            spec = importlib.util.spec_from_file_location(
-                "hmm_strategy",
-                os.path.join(os.path.dirname(__file__), "HMMstrategy.py")
-            )
-            hmm_mod = importlib.util.load_from_spec(spec)
-            spec.loader.exec_module(hmm_mod)
+            df = pd.read_csv(filepath, skiprows=[1, 2],
+                           index_col=0, parse_dates=True)
+        except:
+            df = pd.read_csv(filepath, index_col=0, parse_dates=True)
+        df.columns = df.columns.str.strip().str.lower()
+        close_col = [c for c in df.columns if 'close' in c or 'price' in c][0]
+        df = df[[close_col]].rename(columns={close_col: 'close'})
+        df['close'] = pd.to_numeric(df['close'], errors='coerce')
+        df = df.dropna(subset=['close']).sort_index()
+        df.index = pd.to_datetime(df.index)
+        df['log_return'] = np.log(df['close'] / df['close'].shift(1))
+        df = df.dropna(subset=['log_return'])
+        log.info(f"Price data loaded: {len(df)} rows")
+        return df
 
-            import yfinance as yf
-            price_df   = hmm_mod.load_price_data("price_data.csv")
-            feature_df = hmm_mod.load_feature_data("features_improved.csv")
-            vix_data   = hmm_mod.fetch_vix(
-                str(price_df.index[0].date()),
-                str(price_df.index[-1].date())
-            )
-            master = hmm_mod.build_master_dataframe(price_df, feature_df, vix_data)
-            results = run_forward_engine(master)
+    # ── Load feature data ──
+    def load_features(filepath):
+        df = pd.read_csv(filepath, index_col=0, parse_dates=True)
+        df.columns = df.columns.str.strip().str.lower()
+        df.index = pd.to_datetime(df.index, errors='coerce')
+        df = df[df.index.notnull()].sort_index()
+        log.info(f"Feature data loaded: {len(df)} rows, columns={list(df.columns)}")
+        return df
 
-        except Exception as e:
-            log.error(f"Could not load HMMstrategy.py: {e}")
-            log.info("Please run from the same session as HMMstrategy.py:")
-            log.info("  exec(open('HMMstrategy.py').read())")
-            log.info("  exec(open('forward_regime_engine.py').read())")
-            raise
+    # ── Build master dataframe ──
+    def build_master(price_df, feature_df):
+        master = price_df.copy()
+        cols_to_drop = [c for c in ['close', 'log_return']
+                       if c in feature_df.columns]
+        if cols_to_drop:
+            feature_df = feature_df.drop(columns=cols_to_drop)
+        master = master.join(feature_df, how='left')
+        available = [f for f in FEATURES if f in master.columns]
+        missing = [f for f in FEATURES if f not in master.columns]
+        if missing:
+            log.warning(f"Missing features: {missing}")
+        if not available:
+            raise KeyError(f"No features found: {FEATURES}")
+        before = len(master)
+        master = master.dropna(subset=available)
+        log.info(f"Master dataframe: {len(master)} rows, "
+                f"{master.index[0].date()} -> {master.index[-1].date()}")
+        log.info(f"Features available: {available}")
+        return master
+
+    # ── Run pipeline ──
+    try:
+        price_df   = load_price(PRICE_CSV)
+        feature_df = load_features(FEATURE_CSV)
+        master     = build_master(price_df, feature_df)
+
+        min_rows = TRAIN_WINDOW + STEP_SIZE
+        if len(master) < min_rows:
+            raise ValueError(
+                f"Not enough data: {len(master)} rows, need {min_rows}"
+            )
+
+        results = run_forward_engine(master)
+        log.info("Pipeline complete for SPY.")
+
+    except FileNotFoundError as e:
+        log.error(f"File not found: {e}")
+    except Exception as e:
+        log.error(f"Pipeline failed: {e}")
+        raise
