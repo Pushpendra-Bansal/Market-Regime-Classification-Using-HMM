@@ -1,3 +1,17 @@
+# ==============================================================================
+# HMM TRADING STRATEGY — PERFORMANCE EVALUATION & COMPARISON
+#
+# REQUIREMENTS:
+#   1. Python 3.8+
+#   2. Dependencies: pip install pandas numpy matplotlib
+#   3. Required Input Files (in same directory):
+#      - 'hmm_oos_results.csv' : Out-of-sample regime predictions from the HMM engine.
+#      - 'price_data.csv'      : Historical asset price dataset.
+#
+# HOW TO RUN:
+#   - Command Line : python compare_strategies.py
+#   - Jupyter Cell : Paste into a cell and execute (saves PNG chart & CSV summary).
+# ==============================================================================
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
